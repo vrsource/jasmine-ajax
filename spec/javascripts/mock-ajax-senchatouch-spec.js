@@ -9,6 +9,17 @@ describe('Jasmine Mock Ajax (for Sencha Touch)', function() {
       failure = jasmine.createSpy("onFailure");
    });
 
+   afterEach(function() {
+      // Clean up pending requests.
+      // note: relies on fix for Ext.data.Connection.abort bug
+      //  see: http://www.sencha.com/forum/showthread.php?128367
+      Ext.each([request, anotherRequest], function(r) {
+         if(r && r.xhr && (r.xhr.readyState === 2))
+         { Ext.Ajax.abort(r); }
+      });
+
+   });
+
    // ----------------------- //
    describe('when making a request', function() {
       beforeEach(function() {
@@ -36,7 +47,7 @@ describe('Jasmine Mock Ajax (for Sencha Touch)', function() {
       describe('and then another request', function() {
          beforeEach(function() {
             anotherRequest = Ext.Ajax.request({
-               url: 'example.com/someApi',
+               url: 'example.com/someApi2',
                method: 'GET',
                success: success,
                failure: failure
@@ -64,7 +75,7 @@ describe('Jasmine Mock Ajax (for Sencha Touch)', function() {
          describe("when there is more than one request", function () {
             beforeEach(function() {
                anotherRequest = Ext.Ajax.request({
-                  url: "example.com/someApi",
+                  url: "example.com/someApi3",
                   method: "GET",
                   success: success,
                   failure: failure
@@ -78,6 +89,7 @@ describe('Jasmine Mock Ajax (for Sencha Touch)', function() {
 
          describe("when there are no requests", function () {
             beforeEach(function() {
+               Ext.Ajax.abort(request);
                clearAjaxRequests();
             });
 
@@ -90,6 +102,7 @@ describe('Jasmine Mock Ajax (for Sencha Touch)', function() {
       // --- ClearAjaxRequests() --- //
       describe('clearAjaxRequests()', function() {
          beforeEach(function() {
+            Ext.Ajax.abort(request);
             clearAjaxRequests();
          });
 
@@ -106,7 +119,7 @@ describe('Jasmine Mock Ajax (for Sencha Touch)', function() {
       describe("and the response is Success", function () {
          beforeEach(function() {
             request = Ext.Ajax.request({
-               url: "example.com/someApi",
+               url: "example.com/someApi4",
                method: "GET",
                //dataType: 'text',
                success: success,
@@ -137,7 +150,7 @@ describe('Jasmine Mock Ajax (for Sencha Touch)', function() {
       describe("the content type defaults to application/json", function () {
          beforeEach(function() {
             request = Ext.Ajax.request({
-               url: "example.com/someApi",
+               url: "example.com/someApi5",
                method: "GET",
                success: success,
                failure: failure
@@ -167,7 +180,7 @@ describe('Jasmine Mock Ajax (for Sencha Touch)', function() {
       describe("and the status/response code is 0", function () {
          beforeEach(function() {
             request = Ext.Ajax.request({
-               url: "example.com/someApi",
+               url: "example.com/someApi6",
                method: "GET",
                success: success,
                failure: failure
@@ -198,7 +211,7 @@ describe('Jasmine Mock Ajax (for Sencha Touch)', function() {
    describe("and the response is error", function () {
       beforeEach(function() {
          request = Ext.Ajax.request({
-            url: "example.com/someApi",
+            url: "example.com/someApi7",
             method: "GET",
             success: success,
             failure: failure
