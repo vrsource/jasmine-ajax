@@ -186,7 +186,7 @@ describe('Jasmine Mock Ajax (for Sencha Touch)', function() {
                failure: failure
             });
 
-            response = {status: 0, responseText: '{"foo": "whoops!"}'};
+            response = {status: 0, responseText: ''};
             mostRecentAjaxRequest().response(response);
 
             sharedContext.responseCallback = failure;
