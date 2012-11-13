@@ -1,3 +1,28 @@
+/*global mostRecentAjaxRequest: false, clearAjaxRequests: false, ajaxRequests: false */
+
+// Helper for checking the status of the response.
+function sharedAjaxResponseBehaviorForExt(context) {
+   describe("the response", function () {
+      var resp;
+      beforeEach(function() {
+         resp = context.responseCallback.mostRecentCall.args[0];
+      });
+
+      it("should have the expected status code", function() {
+         expect(resp.status).toEqual(context.status);
+      });
+
+      it("should have the expected content type", function() {
+         expect(resp.getResponseHeader('Content-type')).toEqual(context.contentType);
+      });
+
+      it("should have the expected response text", function() {
+         expect(resp.responseText).toEqual(context.responseText);
+      });
+   });
+}
+
+
 /* Make sure that our mocking for sencha ajax calls works. */
 describe('Jasmine Mock Ajax (for Sencha Touch)', function() {
    var request, anotherRequest, response;
@@ -239,24 +264,3 @@ describe('Jasmine Mock Ajax (for Sencha Touch)', function() {
 
 }); // jasmine mock
 
-// Helper for checking the status of the response.
-function sharedAjaxResponseBehaviorForExt(context) {
-   describe("the response", function () {
-      var resp;
-      beforeEach(function() {
-         resp = context.responseCallback.mostRecentCall.args[0];
-      });
-
-      it("should have the expected status code", function() {
-         expect(resp.status).toEqual(context.status);
-      });
-
-      it("should have the expected content type", function() {
-         expect(resp.getResponseHeader('Content-type')).toEqual(context.contentType);
-      });
-
-      it("should have the expected response text", function() {
-         expect(resp.responseText).toEqual(context.responseText);
-      });
-   });
-}
